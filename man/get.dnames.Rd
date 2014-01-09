@@ -1,5 +1,5 @@
-\name{get.dsets}
-\alias{get.dsets}
+\name{get.dnames}
+\alias{get.dnames}
 \title{Process a VISION XML file from their EDC}
 \usage{
 get.dnames(xml, isXML = FALSE, names.only = TRUE)

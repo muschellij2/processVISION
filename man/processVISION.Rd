@@ -7,7 +7,7 @@ processVISION(xmlfile, isXML = FALSE, drop.dsets = NULL,
   keep.pattern = NULL, drop.new = TRUE)
 }
 \arguments{
-  \item{xml}{XML filename from VISION EDC, or if
+  \item{xmlfile}{XML filename from VISION EDC, or if
   \code{\link{xmlParse}} has already been run, then the XML
   document with class \code{XMLAbstractDocument}. if
   (\code{isXML = FALSE}), should have ".xml" extension not
@@ -31,6 +31,9 @@ processVISION(xmlfile, isXML = FALSE, drop.dsets = NULL,
   \item{keep.pattern}{vector of regular expression that
   will keep only datasets that contain any of the patterns
   \link{grep}}
+
+  \item{drop.new}{(logical) should records be dropped with
+  a "New" formState (default TRUE)}
 
   \item{verbose}{logical - Progress printed?(TRUE)}
 }

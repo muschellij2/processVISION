@@ -28,8 +28,8 @@ write32.dta(dataframe, file, version = 7L, convert.dates = TRUE,
 }
 \description{
 Essentially a direct copy of \code{\link{write.dta}} from
-the \code{\link{foreign}} package, except taking <= 32
-instead of < 32 characters in a variable name
+the \code{foreign} package, except taking $<=$ 32 instead
+of $<$ 32 characters in a variable name
 }
 \examples{
 \dontrun{

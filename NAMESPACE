@@ -1,3 +1,7 @@
+export(create_stata_dta)
 export(get.dnames)
+export(make.Date)
+export(make.char)
+export(make.numeric)
 export(processVISION)
 export(write32.dta)

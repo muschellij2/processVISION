@@ -1,14 +1,55 @@
-
-
-create_stata_dta <- function(df.list, datetime=NULL){
+#' Process a list of data.frames from processVISION into .dta files for 
+#' Stata
+#' @aliases create_stata_dta
+#' @description Processes a list of data.frames and uses 
+#' \code{\link{write32.dta}} to create Stata data sets, converting factor 
+#' and character vectors of each column of each dataset
+#' @param df.list list of data frames from \code{\link{processVISION}}
+#' @param outdir directory to put Stata .dta files (default ".")
+#' @param date (character, default NULL) date of export, to be added to 
+#' names of datasets
+#' @param lower.names (logical, default FALSE) should the column names for 
+#' each variable be lowercase? 
+#' @param version (integer, default 11L) version of Stata to create, 
+#' passed to \code{\link{write.dta}}
+#' @param convert.dates (logical, default TRUE) convert the dates to 
+#' Stata dates? see \code{\link{write.dta}}
+#' @param convert.factors (character, default "string") how to handle 
+#' factors, see \code{\link{write.dta}}
+#' @param verbose (logical, default TRUE) should names be printed for 
+#' checking the progress?
+#' @param ... Additional arguments to be passed to 
+#' \code{\link{write32.dta}}
+#' @export
+#' @examples
+#' \dontrun{
+#' }
+#' @seealso \code{\link{write32.dta}}, \code{\link{write.dta}}, 
+#' \code{\link{processVISION}}
+#' @return data.frame with 2 columns: the dataset name and an indicator
+#' if that dataset was converted.
+create_stata_dta <- function(df.list, 
+                             outdir=".",
+                             date=NULL,
+                             lower.names=FALSE, 
+                             version=11L,
+                             convert.dates=TRUE,
+                             convert.factors="string",
+                             verbose=TRUE,
+                             ...){
   
   ndsets <- length(df.list)
   dsets <- names(df.list)
   
   ncs <- rep(NA, length(dsets))
+  idset <- 7
   
-  for (idset in seq_along(dsets)){
-    dname <- dsets[idset]
+  check <- data.frame(dataset=dsets, stringsAsFactors=FALSE)
+  check$converted = TRUE
+  
+  for (idset in seq_along(df.list)){
+
+    xdname <- dname <- dsets[idset]
     dataset <- df.list[[idset]]
     
     ### getting maximum character lenght for variable names
@@ -18,7 +59,7 @@ create_stata_dta <- function(df.list, datetime=NULL){
     cn <- tolower(cn)
     ## make sure no dup names
     stopifnot(!any(duplicated(cn)))
-    colnames(dataset) <- cn
+    if (lower.names) colnames(dataset) <- cn
     
     stopifnot(max(nc) <= 32)	
     for (icol in 1:ncol(dataset)){
@@ -49,7 +90,8 @@ create_stata_dta <- function(df.list, datetime=NULL){
       if (!is.character(x)){
         return(0)
       } else {
-        return( max(nchar(x, "bytes") ) )
+        suppressWarnings( m <- max(nchar(x, "bytes") ))
+        return(m  )
       }
     })
     
@@ -63,10 +105,24 @@ create_stata_dta <- function(df.list, datetime=NULL){
     # }
     
     # print(max(nc))
-    dta <- file.path(dtadir, paste0(dname, "_", date, ".dta"))
-    my.write.dta(dataset, file=dta, version=11, 
-                 convert.dates=TRUE, convert.factors=c("string") )
+    if (!is.null(date)) dname = paste0(dname, "_", date)
+    dta <- file.path(outdir, paste0(dname, ".dta"))
+    if (nrow(dataset) > 0) {
+      write32.dta(dataset, file=dta, version=version,
+                  convert.dates=convert.dates, 
+                  convert.factors=convert.factors, ...
+                  )
+      
+    } else {
+      war <- paste0(xdname, " dataset had zero rows and was not converted")
+      check$converted[idset] = FALSE
+      warning(war)
+    }
     # if (length(truncs) >0 ) stop("me")
     # if (any(nchars > 244)) stop("here")
-    print(idset)
+    if (verbose) print(idset)
   }
+  
+  return(check)
+  
+}

@@ -3,14 +3,13 @@
 #' @aliases processVISION
 #' @description This function takes in a XML and creates a list of 
 #' R data.frames
-#' @param xml XML filename from VISION EDC, or if \code{\link{xmlParse}} 
+#' @param xmlfile XML filename from VISION EDC, or if \code{\link{xmlParse}} 
 #' has already been run, then the XML document with class 
 #' \code{XMLAbstractDocument}.  
 #' if (\code{isXML = FALSE}), should have ".xml" extension
 #' not ".zip". 
 #' @param isXML (logical) indicating whether \code{xml} is an 
 #' \code{XMLAbstractDocument} class (TRUE), or a filename (default FALSE)
-#'  
 #' @param drop.dsets vector of dataset names that can be dropped (NULL)
 #' @param dset.names vector of dataset names to match (after dropping drop.dsets) 
 #' if these do not match EXACTLY (case) the dataset names (all of them), 
@@ -19,6 +18,8 @@
 #' that contain patterns using \link{grep}
 #' @param keep.pattern vector of regular expression that will keep only datasets 
 #' that contain any of the patterns \link{grep}
+#' @param drop.new (logical) should records be dropped with 
+#' a "New" formState (default TRUE)
 #'   
 #' @param verbose logical - Progress printed?(TRUE)
 #' @export
@@ -119,8 +120,8 @@ processVISION <- function(xmlfile,
 
 
 #' Process a VISION XML file from their EDC
-#' @name get.dsets
-#' @aliases get.dsets
+#' @name get.dnames
+#' @aliases get.dnames
 #' @description Gets the dataset names from an VISION XML document
 #' @param xml XML filename from VISION EDC, or if \code{\link{xmlParse}} 
 #' has already been run, then the XML document with class 
@@ -137,7 +138,6 @@ processVISION <- function(xmlfile,
 #' @seealso \code{\link{xmlParse}}, \code{\link{xmlRoot}}
 #' @return A list with slots dsets, the dataset names, and if 
 #' \code{names.only = FALSE}, proc, the XML parsed object.
-
 get.dnames <- function(xml, isXML=FALSE, names.only=TRUE){
 ## parse the xml  
   if (isXML){
