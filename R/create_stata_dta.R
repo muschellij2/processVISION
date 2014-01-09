@@ -18,6 +18,7 @@
 #' factors, see \code{\link{write.dta}}
 #' @param verbose (logical, default TRUE) should names be printed for 
 #' checking the progress?
+#' @param trunc32 Truncate variables with > 32 characters?
 #' @param ... Additional arguments to be passed to 
 #' \code{\link{write32.dta}}
 #' @export
@@ -36,16 +37,17 @@ create_stata_dta <- function(df.list,
                              convert.dates=TRUE,
                              convert.factors="string",
                              verbose=TRUE,
+                             trunc32 = FALSE,
                              ...){
   
   ndsets <- length(df.list)
   dsets <- names(df.list)
   
-  ncs <- rep(NA, length(dsets))
-  idset <- 7
+  idset <- 49
   
   check <- data.frame(dataset=dsets, stringsAsFactors=FALSE)
   check$converted = TRUE
+  check$max.nchar = 0
   
   for (idset in seq_along(df.list)){
 
@@ -55,13 +57,13 @@ create_stata_dta <- function(df.list,
     ### getting maximum character lenght for variable names
     cn <- colnames(dataset)
     nc <- nchar(cn)
-    ncs[idset] <- max(nc)
+    check$max.nchar[idset] <- max(nc)
     cn <- tolower(cn)
     ## make sure no dup names
     stopifnot(!any(duplicated(cn)))
     if (lower.names) colnames(dataset) <- cn
     
-    stopifnot(max(nc) <= 32)	
+    if (!trunc32) stopifnot(max(nc) <= 32)	
     for (icol in 1:ncol(dataset)){
       colname <- cn[icol]
       if (is.factor(dataset[, icol])) 
@@ -73,7 +75,7 @@ create_stata_dta <- function(df.list,
       dataset[, icol] <- as.character(dataset[, icol])
       if (grepl("date_time", colname)) {
         nas <- is.na(dataset[, icol])
-        dataset[nas, icol] <- ""
+        if (any(nas)) dataset[nas, icol] <- ""
         dataset[, icol] <- make.char(dataset[, icol])
         next;
       }
@@ -120,7 +122,7 @@ create_stata_dta <- function(df.list,
     }
     # if (length(truncs) >0 ) stop("me")
     # if (any(nchars > 244)) stop("here")
-    if (verbose) print(idset)
+    if (verbose) print(xdname)
   }
   
   return(check)

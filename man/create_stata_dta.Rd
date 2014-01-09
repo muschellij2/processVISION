@@ -5,7 +5,7 @@ Stata}
 \usage{
 create_stata_dta(df.list, outdir = ".", date = NULL, lower.names = FALSE,
   version = 11L, convert.dates = TRUE, convert.factors = "string",
-  verbose = TRUE, ...)
+  verbose = TRUE, trunc32 = FALSE, ...)
 }
 \arguments{
   \item{df.list}{list of data frames from
@@ -31,6 +31,8 @@ create_stata_dta(df.list, outdir = ".", date = NULL, lower.names = FALSE,
 
   \item{verbose}{(logical, default TRUE) should names be
   printed for checking the progress?}
+
+  \item{trunc32}{Truncate variables with > 32 characters?}
 
   \item{...}{Additional arguments to be passed to
   \code{\link{write32.dta}}}
