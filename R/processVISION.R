@@ -25,6 +25,10 @@
 #' @export
 #' @examples
 #' \dontrun{
+#' xmlfile = "MISTIE_III_Subjects_2014_01_09.xml"
+#' df <- processVISION(xmlfile, isXML=FALSE, 
+#' drop.pattern=c("^i_Doc_.*", "^docs_.*"),
+#' drop.new=TRUE)
 #' }
 #' @seealso \code{\link{xmlParse}}, \code{\link{xmlRoot}}
 #' @return A list with slots df.list, the list of datasets, 
@@ -134,6 +138,8 @@ processVISION <- function(xmlfile,
 #' @export
 #' @examples
 #' \dontrun{
+#' xmlfile = "MISTIE_III_Subjects_2014_01_09.xml"
+#' dnames <- get.dnames(xmlfile, isXML=FALSE, names.only=TRUE)$dsets
 #' }
 #' @seealso \code{\link{xmlParse}}, \code{\link{xmlRoot}}
 #' @return A list with slots dsets, the dataset names, and if 

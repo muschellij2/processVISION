@@ -27,6 +27,8 @@ Gets the dataset names from an VISION XML document
 }
 \examples{
 \dontrun{
+xmlfile = "MISTIE_III_Subjects_2014_01_09.xml"
+dnames <- get.dnames(xmlfile, isXML=FALSE, names.only=TRUE)$dsets
 }
 }
 \seealso{

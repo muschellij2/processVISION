@@ -49,6 +49,12 @@ each dataset
 }
 \examples{
 \dontrun{
+xmlfile = "MISTIE_III_Subjects_2014_01_09.xml"
+df <- processVISION(xmlfile, isXML=FALSE,
+drop.pattern=c("^i_Doc_.*", "^docs_.*"),
+drop.new=TRUE)
+df.list <- df$df.list
+check <- create_stata_dta(df.list, outdir=datadir)
 }
 }
 \seealso{
