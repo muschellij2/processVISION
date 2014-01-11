@@ -8,6 +8,9 @@
 #' @param outdir directory to put Stata .dta files (default ".")
 #' @param date (character, default NULL) date of export, to be added to 
 #' names of datasets
+#' @param tryConvert (logical, default TRUE) should the function try to
+#' make Date and numeric columns (TRUE) 
+#' or just leave the data.frame as is (FALSE)?
 #' @param lower.names (logical, default FALSE) should the column names for 
 #' each variable be lowercase? 
 #' @param version (integer, default 11L) version of Stata to create, 
@@ -39,6 +42,7 @@ create_stata_dta <- function(df.list,
                              outdir=".",
                              date=NULL,
                              lower.names=FALSE, 
+                             tryConvert = TRUE,
                              version=11L,
                              convert.dates=TRUE,
                              convert.factors="string",
@@ -70,27 +74,29 @@ create_stata_dta <- function(df.list,
     if (lower.names) colnames(dataset) <- cn
     
     if (!trunc32) stopifnot(max(nc) <= 32)	
-    for (icol in 1:ncol(dataset)){
-      colname <- cn[icol]
-      if (is.factor(dataset[, icol])) 
-        dataset[, icol] <- as.character(dataset[, icol])
-      nchars <- nchar(dataset[, icol])
-      dataset[, icol][nchars == 0] <- NA
-      nas <- is.na(dataset[, icol])
-      # dataset[nas, icol] <- ""
-      dataset[, icol] <- as.character(dataset[, icol])
-      if (grepl("date_time", colname)) {
+    if (tryConvert){
+      for (icol in 1:ncol(dataset)){
+        colname <- cn[icol]
+        if (is.factor(dataset[, icol])) 
+          dataset[, icol] <- as.character(dataset[, icol])
+        nchars <- nchar(dataset[, icol])
+        dataset[, icol][nchars == 0] <- NA
         nas <- is.na(dataset[, icol])
-        if (any(nas)) dataset[nas, icol] <- ""
+        # dataset[nas, icol] <- ""
+        dataset[, icol] <- as.character(dataset[, icol])
+        if (grepl("date_time", colname)) {
+          nas <- is.na(dataset[, icol])
+          if (any(nas)) dataset[nas, icol] <- ""
+          dataset[, icol] <- make.char(dataset[, icol])
+          next;
+        }
+        dataset[, icol] <- make.numeric(dataset[, icol])
+        # print(class(dataset[, icol]))
+        dataset[, icol] <- make.Date(dataset[, icol])
+        # print(class(dataset[, icol]))
         dataset[, icol] <- make.char(dataset[, icol])
-        next;
+        # print(class(dataset[, icol]))
       }
-      dataset[, icol] <- make.numeric(dataset[, icol])
-      # print(class(dataset[, icol]))
-      dataset[, icol] <- make.Date(dataset[, icol])
-      # print(class(dataset[, icol]))
-      dataset[, icol] <- make.char(dataset[, icol])
-      # print(class(dataset[, icol]))
     }
     
     nchars <- sapply(dataset, function(x) {

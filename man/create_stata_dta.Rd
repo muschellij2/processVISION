@@ -4,8 +4,8 @@
 Stata}
 \usage{
 create_stata_dta(df.list, outdir = ".", date = NULL, lower.names = FALSE,
-  version = 11L, convert.dates = TRUE, convert.factors = "string",
-  verbose = TRUE, trunc32 = FALSE, ...)
+  tryConvert = TRUE, version = 11L, convert.dates = TRUE,
+  convert.factors = "string", verbose = TRUE, trunc32 = FALSE, ...)
 }
 \arguments{
   \item{df.list}{list of data frames from
@@ -16,6 +16,10 @@ create_stata_dta(df.list, outdir = ".", date = NULL, lower.names = FALSE,
 
   \item{date}{(character, default NULL) date of export, to
   be added to names of datasets}
+
+  \item{tryConvert}{(logical, default TRUE) should the
+  function try to make Date and numeric columns (TRUE) or
+  just leave the data.frame as is (FALSE)?}
 
   \item{lower.names}{(logical, default FALSE) should the
   column names for each variable be lowercase?}
