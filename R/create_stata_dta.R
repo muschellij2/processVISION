@@ -62,6 +62,8 @@ create_stata_dta <- function(df.list,
   for (idset in seq_along(df.list)){
 
     xdname <- dname <- dsets[idset]
+    if (verbose) print(xdname)
+    
     dataset <- df.list[[idset]]
     
     ### getting maximum character lenght for variable names
@@ -134,7 +136,7 @@ create_stata_dta <- function(df.list,
     }
     # if (length(truncs) >0 ) stop("me")
     # if (any(nchars > 244)) stop("here")
-    if (verbose) print(xdname)
+    if (verbose) print(paste0(xdname, " Converted"))
   }
   
   return(check)
