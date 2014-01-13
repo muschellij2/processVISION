@@ -3,8 +3,9 @@
 \title{Process a VISION XML file from their EDC}
 \usage{
 processVISION(xmlfile, isXML = FALSE, drop.dsets = NULL,
-  dset.names = NULL, verbose = TRUE, drop.pattern = NULL,
-  keep.pattern = NULL, drop.new = TRUE)
+  keep.dsets = NULL, dset.names = NULL, verbose = TRUE,
+  drop.pattern = NULL, keep.pattern = NULL, drop.new = TRUE,
+  writedta = FALSE, ...)
 }
 \arguments{
   \item{xmlfile}{XML filename from VISION EDC, or if
@@ -20,6 +21,9 @@ processVISION(xmlfile, isXML = FALSE, drop.dsets = NULL,
   \item{drop.dsets}{vector of dataset names that can be
   dropped (NULL)}
 
+  \item{keep.dsets}{vector of dataset names that are to be
+  kept (NULL)}
+
   \item{dset.names}{vector of dataset names to match (after
   dropping drop.dsets) if these do not match EXACTLY (case)
   the dataset names (all of them), this will error(NULL)}
@@ -34,6 +38,12 @@ processVISION(xmlfile, isXML = FALSE, drop.dsets = NULL,
 
   \item{drop.new}{(logical) should records be dropped with
   a "New" formState (default TRUE)}
+
+  \item{writedta}{(logical) should the dta be written for
+  each dataset? (default FALSE)}
+
+  \item{...}{arguments to be passed to
+  \code{create_stata_dta}}
 
   \item{verbose}{logical - Progress printed?(TRUE)}
 }

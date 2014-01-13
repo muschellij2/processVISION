@@ -11,6 +11,7 @@
 #' @param isXML (logical) indicating whether \code{xml} is an 
 #' \code{XMLAbstractDocument} class (TRUE), or a filename (default FALSE)
 #' @param drop.dsets vector of dataset names that can be dropped (NULL)
+#' @param keep.dsets vector of dataset names that are to be kept (NULL)
 #' @param dset.names vector of dataset names to match (after dropping drop.dsets) 
 #' if these do not match EXACTLY (case) the dataset names (all of them), 
 #' this will error(NULL)
@@ -41,6 +42,7 @@
 processVISION <- function(xmlfile, 
                           isXML=FALSE,
                           drop.dsets = NULL, 
+                          keep.dsets = NULL, 
                           dset.names = NULL, 
                           verbose=TRUE,
                           drop.pattern = NULL,
@@ -58,7 +60,8 @@ processVISION <- function(xmlfile,
   
   ### dsets is the datasets to run
   if (!is.null(drop.dsets)) dsets <- dsets[ !(dsets %in% drop.dsets) ]
-
+  if (!is.null(keep.dsets)) dsets <- dsets[  (dsets %in% keep.dsets) ]
+  
   ### drop pattern
   if (!is.null(drop.pattern)) {
     dset.mat = sapply(drop.pattern, grepl, x=dsets)
