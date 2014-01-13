@@ -90,7 +90,7 @@ processVISION <- function(xmlfile,
   for (idset in 1:ndsets){
     dname <- dsets[idset]
     if (verbose) print(dname)
-    dset <- paste0("/", dname)
+    dset <- paste0("/export_from_vision_EDC/", dname)
     
     #### get the records for that form
     nodeset <- getNodeSet(proc, dset)
