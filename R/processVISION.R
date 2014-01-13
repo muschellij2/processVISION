@@ -20,7 +20,10 @@
 #' that contain any of the patterns \link{grep}
 #' @param drop.new (logical) should records be dropped with 
 #' a "New" formState (default TRUE)
-#'   
+#' @param writedta (logical) should the dta be written for each 
+#' dataset? (default FALSE) 
+#' @param ... arguments to be passed to \code{create_stata_dta}
+#'    
 #' @param verbose logical - Progress printed?(TRUE)
 #' @export
 #' @examples
@@ -42,7 +45,8 @@ processVISION <- function(xmlfile,
                           verbose=TRUE,
                           drop.pattern = NULL,
                           keep.pattern = NULL,
-                          drop.new=TRUE){
+                          drop.new=TRUE,
+                          writedta = FALSE, ...){
 
   run <- get.dnames(xmlfile, isXML=isXML, names.only=FALSE)
   dsets <- run$dsets
@@ -107,6 +111,9 @@ processVISION <- function(xmlfile,
     }
     
     df.list[[dname]] <- dataset
+    
+    if (writedta) create_stata_dta(df.list[dname], ...)
+    
   }  
   
   
