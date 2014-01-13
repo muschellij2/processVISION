@@ -21,6 +21,9 @@
 #' that contain any of the patterns \link{grep}
 #' @param drop.new (logical) should records be dropped with 
 #' a "New" formState (default TRUE)
+#' @param homogeneous (logical) should \code{\link{xmlToDataFrame}}
+#' assume each node has all the variables (default TRUE), note this is 
+#' different than default for xmlToDataFrame
 #' @param writedta (logical) should the dta be written for each 
 #' dataset? (default FALSE) 
 #' @param ... arguments to be passed to \code{create_stata_dta}
@@ -48,6 +51,7 @@ processVISION <- function(xmlfile,
                           drop.pattern = NULL,
                           keep.pattern = NULL,
                           drop.new=TRUE,
+                          homogeneous = TRUE,
                           writedta = FALSE, ...){
 
   run <- get.dnames(xmlfile, isXML=isXML, names.only=FALSE)
@@ -103,7 +107,8 @@ processVISION <- function(xmlfile,
     nodeset <- getNodeSet(proc, dset)
     
     ### convert to data.frame
-    dataset <- xmlToDataFrame(doc=proc, nodes=nodeset)
+    dataset <- xmlToDataFrame(doc=proc, nodes=nodeset, 
+                              homogeneous=homogeneous )
     
     ### replace any empty strings with NA
     spaces <- sapply(dataset, function(x) x %in% "")
