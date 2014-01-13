@@ -76,7 +76,7 @@ create_stata_dta <- function(df.list,
     if (lower.names) colnames(dataset) <- cn
     
     if (!trunc32) {
-      stoppers = max(nc) > 32
+      stoppers = nc > 32
       if (any(stoppers)) {
         print(paste0(xdname, " had over 32 character variable names"))
         print(cn[stoppers])
