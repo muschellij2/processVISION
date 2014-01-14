@@ -5,7 +5,7 @@
 processVISION(xmlfile, isXML = FALSE, drop.dsets = NULL,
   keep.dsets = NULL, dset.names = NULL, verbose = TRUE,
   drop.pattern = NULL, keep.pattern = NULL, drop.new = TRUE,
-  writedta = FALSE, ...)
+  xmlToDF = TRUE, homogeneous = NA, writedta = FALSE, ...)
 }
 \arguments{
   \item{xmlfile}{XML filename from VISION EDC, or if
@@ -38,6 +38,15 @@ processVISION(xmlfile, isXML = FALSE, drop.dsets = NULL,
 
   \item{drop.new}{(logical) should records be dropped with
   a "New" formState (default TRUE)}
+
+  \item{xmlToDF}{(logical) if TRUE (default), will use
+  \code{xmlToDF} (usually faster) to convert XML to
+  data.frame. If FALSE, will use \code{xmlToDataFrame}}
+
+  \item{homogeneous}{(logical) should
+  \code{\link{xmlToDataFrame}} assume each node has all the
+  variables (default TRUE), note this is different than
+  default for xmlToDataFrame}
 
   \item{writedta}{(logical) should the dta be written for
   each dataset? (default FALSE)}

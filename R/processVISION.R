@@ -21,6 +21,9 @@
 #' that contain any of the patterns \link{grep}
 #' @param drop.new (logical) should records be dropped with 
 #' a "New" formState (default TRUE)
+#' @param xmlToDF (logical) if TRUE (default), will use \code{xmlToDF} 
+#' (usually faster) to convert XML to data.frame.  
+#' If FALSE, will use \code{xmlToDataFrame}
 #' @param homogeneous (logical) should \code{\link{xmlToDataFrame}}
 #' assume each node has all the variables (default TRUE), note this is 
 #' different than default for xmlToDataFrame
@@ -51,7 +54,8 @@ processVISION <- function(xmlfile,
                           drop.pattern = NULL,
                           keep.pattern = NULL,
                           drop.new=TRUE,
-                          homogeneous = TRUE,
+                          xmlToDF = TRUE,
+                          homogeneous = NA,
                           writedta = FALSE, ...){
 
   run <- get.dnames(xmlfile, isXML=isXML, names.only=FALSE)
@@ -69,6 +73,7 @@ processVISION <- function(xmlfile,
   ### drop pattern
   if (!is.null(drop.pattern)) {
     dset.mat = sapply(drop.pattern, grepl, x=dsets)
+    dset.mat = matrix(dset.mat, ncol=length(drop.pattern))
     dset.drop = apply(dset.mat, 1, any)
     dsets <- dsets[ !dset.drop ]
   }
@@ -76,6 +81,7 @@ processVISION <- function(xmlfile,
   ### keep pattern
   if (!is.null(keep.pattern)) {
     dset.mat = sapply(keep.pattern, grepl, x=dsets)
+    dset.mat = matrix(dset.mat, ncol=length(keep.pattern))    
     dset.keep = apply(dset.mat, 1, any)
     dsets <- dsets[ dset.keep ]
   }
@@ -107,9 +113,20 @@ processVISION <- function(xmlfile,
     nodeset <- getNodeSet(proc, dset)
     
     ### convert to data.frame
-    dataset <- xmlToDataFrame(doc=proc, nodes=nodeset, 
-                              homogeneous=homogeneous )
-    
+    if (xmlToDF) {
+      runtime = system.time({
+        dataset <- xmlToDF(doc=proc, xpath=dset)
+        })
+    } else {
+      ### convert to data.frame
+      runtime = system.time({
+        dataset <- xmlToDataFrame(doc=proc, nodes=nodeset, 
+                                homogeneous=homogeneous )
+      })
+    }
+    if (verbose) print(runtime)
+
+
     ### replace any empty strings with NA
     spaces <- sapply(dataset, function(x) x %in% "")
     dataset[spaces] <- NA
@@ -132,7 +149,8 @@ processVISION <- function(xmlfile,
   datetime <- paste(ss[1:2], collapse="_")
   datetime <- gsub(":", "", datetime)
   
-  return(list(df.list=df.list, datetime=datetime, dsets=dsets))
+  return(list(df.list=df.list, datetime=datetime, 
+              dsets=dsets, runtime=runtime))
   
 }
 
@@ -177,3 +195,53 @@ get.dnames <- function(xml, isXML=FALSE, names.only=TRUE){
   }
   return(list(dsets=dsets, proc=proc))
 }
+
+
+
+
+
+#' Run a XML nodeset to Data frame
+#' @name xmlToDF
+#' @aliases xmlToDF
+#' @description A different way of doing \code{\link{xmlToDataFrame}}
+#' @param nodeset XMLNodeSet object (usually from \code{\link{getNodeSet}}
+#' @param xpath XPath expression to extract the dataset 
+#' @param verbose (logical) for things to be printed (default = TRUE)
+#' @export
+#' @seealso \code{\link{xmlParse}}, \code{\link{xmlToDataFrame}}
+#' @return A data.frame with the number of columns being the unique field
+#' names from all nodes
+xmlToDF = function(doc, xpath, verbose=TRUE){
+  
+  #### get the records for that form
+  nodeset <- getNodeSet(doc, xpath)
+  
+  ## get the field names
+  var.names <- lapply(nodeset, names)
+  
+  ## get the total fields that are in any record
+  fields = unique(unlist(var.names))
+  
+  ## extract the values from all fields
+  dl = lapply(fields, function(x) {
+    if (verbose) print(paste0("  ", x))
+    xpathSApply(proc, paste0(xpath, "/", x), xmlValue)
+  })
+  
+  ## make logical matrix whether each record had that field
+  name.mat = t(sapply(var.names, function(x) fields %in% x))
+  df = data.frame(matrix(NA, nrow=nrow(name.mat), ncol=ncol(name.mat)))
+  names(df) = fields
+  
+  ## fill in that data.frame
+  for (icol in 1:ncol(name.mat)){
+    rep.rows = name.mat[, icol]
+    df[rep.rows, icol] = dl[[icol]]
+  }
+  
+  return(df)
+}
+
+
+
+

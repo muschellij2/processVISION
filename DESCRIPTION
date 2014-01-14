@@ -11,6 +11,7 @@ Description: This builds upon XML with some wrappers that extract data into a
 Depends:
     XML,
     foreign,
-    SASxport
+    SASxport,
+    plyr
 License: GPL (>= 2)
 URL: http://www.preludedynamics.com/, http://bios.preludedynamics.com/VISION

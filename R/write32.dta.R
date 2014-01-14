@@ -170,7 +170,7 @@ make.Date <- function(x, format='%d-%b-%Y') {
 
 
 #' Converts a character vector to no "" strings (changed to another string)
-#' @aliases make.char
+#' @aliases make.character, make.char
 #' @description Checks if vector is character and then changes "" to a 
 #' different character string
 #' and has the option to change NA to this string
@@ -180,14 +180,12 @@ make.Date <- function(x, format='%d-%b-%Y') {
 #' @export
 #' @examples
 #' x <- c(" ", "", NA, "hey", "blah", "2")
-#' make.char(x)
-#' make.char(x, changeNA=TRUE)
-#' x = 1:10
-#' make.Date(x)
+#' make.character(x)
+#' make.character(x, changeNA=TRUE)
 #' @seealso \code{\link{write32.dta}}, \code{\link{as.character}}
 #' @return Date vector or vector of class passed in
 #' 
-make.char <- function(x, changeNA=TRUE, change.char=" ") {
+make.character <- function(x, changeNA=TRUE, change.char=" ") {
   if (!("character" %in% class(x)) ) return(x)
   x[x %in% ""] <- change.char
   if (changeNA) x[is.na(x)] <- change.char

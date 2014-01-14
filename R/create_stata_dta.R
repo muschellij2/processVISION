@@ -96,14 +96,14 @@ create_stata_dta <- function(df.list,
         if (grepl("date_time", colname)) {
           nas <- is.na(dataset[, icol])
           if (any(nas)) dataset[nas, icol] <- ""
-          dataset[, icol] <- make.char(dataset[, icol])
+          dataset[, icol] <- make.character(dataset[, icol])
           next;
         }
         dataset[, icol] <- make.numeric(dataset[, icol])
         # print(class(dataset[, icol]))
         dataset[, icol] <- make.Date(dataset[, icol])
         # print(class(dataset[, icol]))
-        dataset[, icol] <- make.char(dataset[, icol])
+        dataset[, icol] <- make.character(dataset[, icol])
         # print(class(dataset[, icol]))
       }
     }
