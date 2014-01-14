@@ -124,8 +124,10 @@ processVISION <- function(xmlfile,
                                 homogeneous=homogeneous )
       })
     }
-    if (verbose) print(runtime)
-
+    if (verbose) {
+      cat("Run Time for XML to DataFrame\n")
+      print(runtime)
+    }
 
     ### replace any empty strings with NA
     spaces <- sapply(dataset, function(x) x %in% "")
@@ -206,12 +208,14 @@ get.dnames <- function(xml, isXML=FALSE, names.only=TRUE){
 #' @description A different way of doing \code{\link{xmlToDataFrame}}
 #' @param nodeset XMLNodeSet object (usually from \code{\link{getNodeSet}}
 #' @param xpath XPath expression to extract the dataset 
+#' @param usewhich (logical) use [which(logical),] versus [logical, ] for
+#' subsetting
 #' @param verbose (logical) for things to be printed (default = TRUE)
 #' @export
 #' @seealso \code{\link{xmlParse}}, \code{\link{xmlToDataFrame}}
 #' @return A data.frame with the number of columns being the unique field
 #' names from all nodes
-xmlToDF = function(doc, xpath, verbose=TRUE){
+xmlToDF = function(doc, xpath, usewhich = TRUE, verbose=TRUE){
   
   #### get the records for that form
   nodeset <- getNodeSet(doc, xpath)
@@ -235,7 +239,8 @@ xmlToDF = function(doc, xpath, verbose=TRUE){
   
   ## fill in that data.frame
   for (icol in 1:ncol(name.mat)){
-    rep.rows = which(name.mat[, icol])
+    rep.rows = name.mat[, icol]
+    if (usewhich) rep.rows = which(rep.rows)
     df[rep.rows, icol] = dl[[icol]]
   }
   
