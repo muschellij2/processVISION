@@ -21,7 +21,7 @@
 #' that contain any of the patterns \link{grep}
 #' @param drop.new (logical) should records be dropped with 
 #' a "New" formState (default TRUE)
-#' @param xmlToDF (logical) if TRUE (default), will use \code{xmlToDF} 
+#' @param fast (logical) if TRUE (default), will use \code{xmlToDF} 
 #' (usually faster) to convert XML to data.frame.  
 #' If FALSE, will use \code{xmlToDataFrame}
 #' @param homogeneous (logical) should \code{\link{xmlToDataFrame}}
@@ -56,7 +56,7 @@ processVISION <- function(xmlfile,
                           drop.pattern = NULL,
                           keep.pattern = NULL,
                           drop.new=TRUE,
-                          xmlToDF = TRUE,
+                          fast = TRUE,
                           homogeneous = NA,
                           writedta = FALSE, ...){
 
@@ -115,8 +115,8 @@ processVISION <- function(xmlfile,
     #### get the records for that form
     nodeset <- getNodeSet(proc, dset)
     
-    ### convert to data.frame
-    if (xmlToDF) {
+    ### convert to data.frame - use xmlToDF or not
+    if (fast) {
       runtime = system.time({
         dataset <- xmlToDF(doc=proc, xpath=dset)
         })
