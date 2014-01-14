@@ -43,7 +43,9 @@
 #' @seealso \code{\link{xmlParse}}, \code{\link{xmlRoot}}
 #' @return A list with slots df.list, the list of datasets, 
 #' datetime, the date/time the data was exported according to the XML,
-#' dsets, the dataset names, should match names(df.list).
+#' dsets, the dataset names, should match names(df.list), and 
+#' runtimes, a list of \code{\link{system.time}} objects recorded how
+#' long it took to convert to data.frame from XML.
 
 processVISION <- function(xmlfile, 
                           isXML=FALSE,
@@ -103,6 +105,7 @@ processVISION <- function(xmlfile,
   df.list <- vector(mode="list", length=ndsets)
   names(df.list) <- dsets
   
+  runtimes = df.list
   ### loop through, converting every dataset to a data.frame.
   for (idset in 1:ndsets){
     dname <- dsets[idset]
@@ -138,6 +141,7 @@ processVISION <- function(xmlfile,
     }
     
     df.list[[dname]] <- dataset
+    runtimes[[dname]] = runtime
     
     if (writedta) create_stata_dta(df.list[dname], ...)
     
@@ -152,7 +156,7 @@ processVISION <- function(xmlfile,
   datetime <- gsub(":", "", datetime)
   
   return(list(df.list=df.list, datetime=datetime, 
-              dsets=dsets, runtime=runtime))
+              dsets=dsets, runtimes=runtimes))
   
 }
 

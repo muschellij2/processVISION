@@ -59,7 +59,10 @@ processVISION(xmlfile, isXML = FALSE, drop.dsets = NULL,
 \value{
 A list with slots df.list, the list of datasets, datetime,
 the date/time the data was exported according to the XML,
-dsets, the dataset names, should match names(df.list).
+dsets, the dataset names, should match names(df.list), and
+runtimes, a list of \code{\link{system.time}} objects
+recorded how long it took to convert to data.frame from
+XML.
 }
 \description{
 This function takes in a XML and creates a list of R
