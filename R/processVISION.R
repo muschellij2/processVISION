@@ -235,7 +235,7 @@ xmlToDF = function(doc, xpath, verbose=TRUE){
   
   ## fill in that data.frame
   for (icol in 1:ncol(name.mat)){
-    rep.rows = name.mat[, icol]
+    rep.rows = which(name.mat[, icol])
     df[rep.rows, icol] = dl[[icol]]
   }
   
