@@ -14,7 +14,7 @@
 #' @param keep.dsets vector of dataset names that are to be kept (NULL)
 #' @param dset.names vector of dataset names to match (after dropping drop.dsets) 
 #' if these do not match EXACTLY (case) the dataset names (all of them), 
-#' this will error(NULL)
+#' this will error (NULL)
 #' @param drop.pattern vector of regular expression that will drop datasets 
 #' that contain patterns using \link{grep}
 #' @param keep.pattern vector of regular expression that will keep only datasets 
@@ -219,7 +219,15 @@ get.dnames <- function(xml, isXML=FALSE, names.only=TRUE){
 #' @seealso \code{\link{xmlParse}}, \code{\link{xmlToDataFrame}}
 #' @return A data.frame with the number of columns being the unique field
 #' names from all nodes
-xmlToDF = function(doc, xpath, usewhich = TRUE, verbose=TRUE){
+xmlToDF = function(doc, xpath, usewhich = TRUE, verbose=TRUE, isXML = FALSE){
+  
+  if (isXML){
+    ### make sure an XML document
+    stopifnot(inherits(doc, "XMLAbstractDocument"))
+    doc <- doc
+  } else {
+    doc <- xmlParse(doc)
+  }  
   
   #### get the records for that form
   nodeset <- getNodeSet(doc, xpath)
