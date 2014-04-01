@@ -215,18 +215,20 @@ get.dnames <- function(xml, isXML=FALSE, names.only=TRUE){
 #' @param usewhich (logical) use [which(logical),] versus [logical, ] for
 #' subsetting
 #' @param verbose (logical) for things to be printed (default = TRUE)
+#' @param isXML (logical) FALSE if doc is a character
+#' @param ... arguments to be passed to \code{\link{xmlParse}}
 #' @export
 #' @seealso \code{\link{xmlParse}}, \code{\link{xmlToDataFrame}}
 #' @return A data.frame with the number of columns being the unique field
 #' names from all nodes
-xmlToDF = function(doc, xpath, usewhich = TRUE, verbose=TRUE, isXML = FALSE){
+xmlToDF = function(doc, xpath, usewhich = TRUE, verbose=TRUE, 
+                   isXML = FALSE, ...){
   
   if (isXML){
     ### make sure an XML document
     stopifnot(inherits(doc, "XMLAbstractDocument"))
-    doc <- doc
   } else {
-    doc <- xmlParse(doc)
+    doc <- xmlParse(doc, ...)
   }  
   
   #### get the records for that form
