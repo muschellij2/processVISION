@@ -222,7 +222,7 @@ get.dnames <- function(xml, isXML=FALSE, names.only=TRUE){
 #' @return A data.frame with the number of columns being the unique field
 #' names from all nodes
 xmlToDF = function(doc, xpath, usewhich = TRUE, verbose=TRUE, 
-                   isXML = FALSE, ...){
+                   isXML = TRUE, ...){
   
   if (isXML){
     ### make sure an XML document
@@ -243,7 +243,7 @@ xmlToDF = function(doc, xpath, usewhich = TRUE, verbose=TRUE,
   ## extract the values from all fields
   dl = lapply(fields, function(x) {
     if (verbose) print(paste0("  ", x))
-    xpathSApply(proc, paste0(xpath, "/", x), xmlValue)
+    xpathSApply(doc, paste0(xpath, "/", x), xmlValue)
   })
   
   ## make logical matrix whether each record had that field
