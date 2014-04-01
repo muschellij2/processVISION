@@ -222,7 +222,7 @@ get.dnames <- function(xml, isXML=FALSE, names.only=TRUE){
 #' @return A data.frame with the number of columns being the unique field
 #' names from all nodes
 xmlToDF = function(doc, xpath, usewhich = TRUE, verbose=TRUE, 
-                   isXML = FALSE, ...){
+                   isXML = TRUE, ...){
   
   if (isXML){
     ### make sure an XML document
