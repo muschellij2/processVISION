@@ -5,8 +5,7 @@
 xmlToDF(doc, xpath, usewhich = TRUE, verbose = TRUE, isXML = TRUE, ...)
 }
 \arguments{
-  \item{nodeset}{XMLNodeSet object (usually from
-  \code{\link{getNodeSet}}}
+  \item{doc}{XML document to be parsed}
 
   \item{xpath}{XPath expression to extract the dataset}
 

@@ -3,7 +3,7 @@
 \title{Read in a VISION html file with a table}
 \usage{
 htmlToCSV(file, writeFile = TRUE, outfile = NULL, tab.type = "queries",
-  verbose = TRUE, colClasses = NULL)
+  tab.attr = "summary", verbose = TRUE, colClasses = NULL)
 }
 \arguments{
   \item{file}{(character) to be read in}
@@ -11,6 +11,12 @@ htmlToCSV(file, writeFile = TRUE, outfile = NULL, tab.type = "queries",
   \item{writeFile}{(logical) Should a CSV be written}
 
   \item{outfile}{(character) filename of CSV to be written}
+
+  \item{tab.type}{(character) type of table to extract,
+  usually "queries"}
+
+  \item{tab.attr}{(character) attribute to select the table
+  on, usually summary, but maybe class}
 
   \item{verbose}{(logical) diagnostic messages to be
   written}

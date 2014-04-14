@@ -5,6 +5,9 @@
 #' @param file (character) to be read in
 #' @param writeFile (logical) Should a CSV be written
 #' @param outfile (character) filename of CSV to be written
+#' @param tab.type (character) type of table to extract, usually "queries"
+#' @param tab.attr (character) attribute to select the table on, usually
+#' summary, but maybe class
 #' @param verbose (logical) diagnostic messages to be written
 #' @param colClasses (character) column classes for the table - needs to be
 #' same length and number of columns of table
@@ -14,6 +17,7 @@ htmlToCSV = function(file,
                      writeFile = TRUE, 
                      outfile=NULL, 
                      tab.type = "queries",
+                     tab.attr = "summary",
                      verbose = TRUE, 
                      colClasses = NULL){
   ######################################
@@ -33,7 +37,7 @@ htmlToCSV = function(file,
   ######################################
   # Get table names from summary
   ######################################
-  sums <- xpathSApply(doc, '//table', xmlGetAttr, "summary")
+  sums <- xpathSApply(doc, '//table', xmlGetAttr, tab.attr)
   sums = unlist(sums)
   if (verbose){
     cat("The types of tables available are:")
@@ -45,14 +49,16 @@ htmlToCSV = function(file,
   ######################################
   which.sum = which(sums == tab.type)
   sum.chosen = sums[which.sum]
-  xpath = paste0('//table[@summary="', sum.chosen , '"]')
+  xpath = paste0('//table[@', tab.attr, '="', sum.chosen , '"]')
   
   ######################################
   # Get nodes from this tables
   ######################################	
   nodeset <- getNodeSet(doc, xpath)
   xx = paste0(xpath, '//tr[@class="middle_row"]')
+#   xx = paste0(xpath, '//tr')
   hdrs = getNodeSet(doc, xx)
+#   getNodeSet(hdrs, "//td[@class='column_header']")
   
   ######################################
   # Get the colspan and rowspan info
@@ -117,11 +123,12 @@ htmlToCSV = function(file,
   hdr.mat = mapply(function(hd, nhd){
     rep(hd, nhd)
   }, hds, hd.l)
-  hdr.mat = matrix(hdr.mat, ncol= nhds)
-  hds = apply(hdr.mat, 1, function(x) {
-    paste(str_trim(x), collapse = " ", sep = "")
-  })
-  
+  if (nhds > 0){
+    hdr.mat = matrix(hdr.mat, ncol= nhds)
+    hds = apply(hdr.mat, 1, function(x) {
+      paste(str_trim(x), collapse = " ", sep = "")
+    })
+  }
   if (verbose) {
     cat("Header names are:")
     cat(paste0(paste(hds, collapse=", "), "\n"))
@@ -131,7 +138,8 @@ htmlToCSV = function(file,
   ######################################
   # Parse the table
   ######################################
-  tables = readHTMLTable(nodeset[[1]], skip.rows = nhds, 
+  tables = readHTMLTable(nodeset[[1]], 
+                         skip.rows = ifelse(nhds > 0, nhds, integer()), 
                          stringsAsFactors=FALSE)
   
   xtab = tables
@@ -143,8 +151,10 @@ htmlToCSV = function(file,
   ######################################
   # Header workaround - readHTMLTable with header = TRUE didn't work
   ######################################
-  tables = tables[-seq(1, nhds),]
-  colnames(tables) = hds
+  if (nhds > 0) {
+    tables = tables[-seq(1, nhds),]
+    colnames(tables) = hds
+  }
   
   ######################################
   # Check column Classes

@@ -170,7 +170,7 @@ make.Date <- function(x, format='%d-%b-%Y') {
 
 
 #' Converts a character vector to no "" strings (changed to another string)
-#' @aliases make.character, make.char
+#' @aliases make.character
 #' @description Checks if vector is character and then changes "" to a 
 #' different character string
 #' and has the option to change NA to this string

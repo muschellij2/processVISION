@@ -1,7 +1,5 @@
 \name{make.character}
-\alias{make.char}
 \alias{make.character}
-\alias{make.character,}
 \title{Converts a character vector to no "" strings (changed to another string)}
 \usage{
 make.character(x, changeNA = TRUE, change.char = " ")

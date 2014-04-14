@@ -210,7 +210,7 @@ get.dnames <- function(xml, isXML=FALSE, names.only=TRUE){
 #' @name xmlToDF
 #' @aliases xmlToDF
 #' @description A different way of doing \code{\link{xmlToDataFrame}}
-#' @param nodeset XMLNodeSet object (usually from \code{\link{getNodeSet}}
+#' @param doc XML document to be parsed
 #' @param xpath XPath expression to extract the dataset 
 #' @param usewhich (logical) use [which(logical),] versus [logical, ] for
 #' subsetting
