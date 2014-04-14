@@ -1,5 +1,6 @@
 export(create_stata_dta)
 export(get.dnames)
+export(htmlToCSV)
 export(make.Date)
 export(make.character)
 export(make.numeric)

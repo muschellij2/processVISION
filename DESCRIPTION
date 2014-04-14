@@ -12,6 +12,7 @@ Depends:
     XML,
     foreign,
     SASxport,
-    plyr
+    plyr,
+    stringr
 License: GPL (>= 2)
 URL: http://www.preludedynamics.com/, http://bios.preludedynamics.com/VISION

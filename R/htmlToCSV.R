@@ -2,12 +2,13 @@
 #' @description This function reads in an HTML table from VISION and returns
 #' a data.frame as well as writes a CSV for a more manageable format rather than
 #' copying and pasting.
-#' @param File (character) to be read in
+#' @param file (character) to be read in
 #' @param writeFile (logical) Should a CSV be written
 #' @param outfile (character) filename of CSV to be written
 #' @param verbose (logical) diagnostic messages to be written
 #' @param colClasses (character) column classes for the table - needs to be
 #' same length and number of columns of table
+#' @export
 #' @return Data.frame of the table
 htmlToCSV = function(file, 
                      writeFile = TRUE, 
