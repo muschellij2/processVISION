@@ -5,7 +5,7 @@
 processVISION(xmlfile, isXML = FALSE, drop.dsets = NULL,
   keep.dsets = NULL, dset.names = NULL, verbose = TRUE,
   drop.pattern = NULL, keep.pattern = NULL, drop.new = TRUE,
-  xmlToDF = TRUE, homogeneous = NA, writedta = FALSE, ...)
+  fast = TRUE, homogeneous = NA, writedta = FALSE, ...)
 }
 \arguments{
   \item{xmlfile}{XML filename from VISION EDC, or if
@@ -26,7 +26,7 @@ processVISION(xmlfile, isXML = FALSE, drop.dsets = NULL,
 
   \item{dset.names}{vector of dataset names to match (after
   dropping drop.dsets) if these do not match EXACTLY (case)
-  the dataset names (all of them), this will error(NULL)}
+  the dataset names (all of them), this will error (NULL)}
 
   \item{drop.pattern}{vector of regular expression that
   will drop datasets that contain patterns using
@@ -39,7 +39,7 @@ processVISION(xmlfile, isXML = FALSE, drop.dsets = NULL,
   \item{drop.new}{(logical) should records be dropped with
   a "New" formState (default TRUE)}
 
-  \item{xmlToDF}{(logical) if TRUE (default), will use
+  \item{fast}{(logical) if TRUE (default), will use
   \code{xmlToDF} (usually faster) to convert XML to
   data.frame. If FALSE, will use \code{xmlToDataFrame}}
 

@@ -2,7 +2,7 @@
 \alias{xmlToDF}
 \title{Run a XML nodeset to Data frame}
 \usage{
-xmlToDF(doc, xpath, usewhich = TRUE, verbose = TRUE)
+xmlToDF(doc, xpath, usewhich = TRUE, verbose = TRUE, isXML = TRUE, ...)
 }
 \arguments{
   \item{nodeset}{XMLNodeSet object (usually from
@@ -15,6 +15,11 @@ xmlToDF(doc, xpath, usewhich = TRUE, verbose = TRUE)
 
   \item{verbose}{(logical) for things to be printed
   (default = TRUE)}
+
+  \item{isXML}{(logical) FALSE if doc is a character}
+
+  \item{...}{arguments to be passed to
+  \code{\link{xmlParse}}}
 }
 \value{
 A data.frame with the number of columns being the unique
