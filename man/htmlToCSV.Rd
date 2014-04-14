@@ -6,7 +6,7 @@ htmlToCSV(file, writeFile = TRUE, outfile = NULL, tab.type = "queries",
   verbose = TRUE, colClasses = NULL)
 }
 \arguments{
-  \item{File}{(character) to be read in}
+  \item{file}{(character) to be read in}
 
   \item{writeFile}{(logical) Should a CSV be written}
 
