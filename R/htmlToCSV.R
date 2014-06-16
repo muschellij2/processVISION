@@ -26,7 +26,7 @@ htmlToCSV = function(file,
   if (is.null(outfile)){
     outdir = dirname(file)
     bn = basename(file)
-    outfile = paste0(gsub("(.*)\\.htm", "\\1", bn), ".csv")
+    outfile = paste0(gsub("(.*)\\.htm(l|)", "\\1", bn), ".csv")
     outfile = file.path(outdir, outfile)
   }
   
