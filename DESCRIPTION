@@ -16,3 +16,4 @@ Depends:
     stringr
 License: GPL (>= 2)
 URL: http://www.preludedynamics.com/, http://bios.preludedynamics.com/VISION
+RoxygenNote: 5.0.1

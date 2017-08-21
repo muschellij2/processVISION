@@ -46,7 +46,8 @@
 #' dsets, the dataset names, should match names(df.list), and 
 #' runtimes, a list of \code{\link{system.time}} objects recorded how
 #' long it took to convert to data.frame from XML.
-
+#' @import XML foreign SASxport plyr stringr
+#' 
 processVISION <- function(xmlfile, 
                           isXML=FALSE,
                           drop.dsets = NULL, 
